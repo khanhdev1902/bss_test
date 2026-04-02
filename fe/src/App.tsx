@@ -23,7 +23,7 @@ const IphoneFlashSale = () => {
 
   useEffect(() => {
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const IphoneFlashSale = () => {
       if (iphoneSale) setFlashSale(iphoneSale);
     } catch (err) {
       setError("Không thể kết nối đến máy chủ.");
-      console.log(error)
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -67,8 +67,8 @@ const IphoneFlashSale = () => {
       await buyFlashSale(cleanPhone, flashSale!.productId);
       alert("Đã gửi yêu cầu đặt hàng thành công!");
       setPhoneNumber("");
-       fetchData();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await fetchData();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(err.response?.data?.message || "Hệ thống bận, vui lòng thử lại!");
     }
