@@ -10,6 +10,7 @@ const IphoneFlashSale = () => {
   const [flashSale, setFlashSale] = useState<FlashSaleItem | null>(null);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(true);
+  const [feching, setIsfeching] = useState(false);
   const [error, setError] = useState("");
   const [saleStatus, setSaleStatus] = useState<"COMING" | "ACTIVE" | "EXPIRED">(
     "COMING",
@@ -24,7 +25,7 @@ const IphoneFlashSale = () => {
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [feching]);
 
   useEffect(() => {
     if (!flashSale) return;
@@ -43,6 +44,7 @@ const IphoneFlashSale = () => {
   const fetchData = async () => {
     try {
       const sales = await getFlashSales();
+      console.log(sales);
       const iphoneSale = sales.find((item) => item.productId === 1);
       if (iphoneSale) setFlashSale(iphoneSale);
     } catch (err) {
@@ -62,15 +64,20 @@ const IphoneFlashSale = () => {
         "Số điện thoại không hợp lệ (Phải có 10 số, đúng đầu số VN)",
       );
     }
-
+    const sleep = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
     try {
+      setIsfeching(true);
       await buyFlashSale(cleanPhone, flashSale!.productId);
+      await sleep(3000);
+      await fetchData();
       alert("Đã gửi yêu cầu đặt hàng thành công!");
       setPhoneNumber("");
-      await fetchData();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(err.response?.data?.message || "Hệ thống bận, vui lòng thử lại!");
+    } finally {
+      setIsfeching(false);
     }
   };
 
@@ -111,7 +118,7 @@ const IphoneFlashSale = () => {
           </span>
         </div>
 
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <div className="flex justify-between text-xs font-bold mb-1 uppercase text-gray-400">
             <span>Tình trạng kho</span>
             <span>{flashSale.product.stock} máy còn lại</span>
@@ -122,7 +129,7 @@ const IphoneFlashSale = () => {
               style={{ width: `${(flashSale.product.stock / 20) * 100}%` }}
             ></div>
           </div>
-        </div> */}
+        </div>
 
         {saleStatus === "ACTIVE" ? (
           <form onSubmit={handleOrder} className="space-y-4">
@@ -149,8 +156,11 @@ const IphoneFlashSale = () => {
             </div>
 
             {flashSale.product.stock > 0 ? (
-              <button className="w-full bg-black text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition-transform active:scale-95 shadow-lg">
-                {loading ? "PROCESSING..." : "ADD TO CART"}
+              <button
+                disabled={feching}
+                className="w-full bg-black text-white font-bold py-4 rounded-xl hover:bg-gray-800 transition-transform active:scale-95 shadow-lg"
+              >
+                {feching ? "PROCESSING..." : "ADD TO CART"}
               </button>
             ) : (
               <button
