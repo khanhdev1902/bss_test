@@ -63,6 +63,9 @@ export class FlashSaleService implements OnModuleInit {
 
     await this.redisService.set(userKey, phone);
     await this.queueService.addJob('process-order', { phone, productId });
-    return { message: 'Đang xử lý đơn hàng, check sau nha!' };
+    return {
+      stock: currentStock,
+      message: 'Đang xử lý đơn hàng, check sau nha!',
+    };
   }
 }
