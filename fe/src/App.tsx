@@ -118,7 +118,7 @@ const IphoneFlashSale = () => {
           </span>
         </div>
 
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <div className="flex justify-between text-xs font-bold mb-1 uppercase text-gray-400">
             <span>Tình trạng kho</span>
             <span>{flashSale.product.stock} máy còn lại</span>
@@ -129,7 +129,7 @@ const IphoneFlashSale = () => {
               style={{ width: `${(flashSale.product.stock / 20) * 100}%` }}
             ></div>
           </div>
-        </div>
+        </div> */}
 
         {saleStatus === "ACTIVE" ? (
           <form onSubmit={handleOrder} className="space-y-4">
