@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7
+    container_name: redis_flashsale
+    ports:
+      - '6379:6379'
+
+  mysql:
+    image: mysql:8
+    container_name: mysql_flashsale
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_test
+    ports:
+      - '3306:3306'
