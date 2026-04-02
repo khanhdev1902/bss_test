@@ -69,7 +69,7 @@ const IphoneFlashSale = () => {
     try {
       setIsfeching(true);
       await buyFlashSale(cleanPhone, flashSale!.productId);
-      await sleep(3000);
+      await sleep(2000);
       await fetchData();
       alert("Đã gửi yêu cầu đặt hàng thành công!");
       setPhoneNumber("");
